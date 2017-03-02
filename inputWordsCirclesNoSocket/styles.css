@@ -1,0 +1,16 @@
+input {
+font-family: Courier,monospace;
+color: #FF4B38;
+font-size: 30px;
+border: none;
+/*border-bottom:1px solid #FF4B38;*/
+background:transparent;
+text-align: center;
+}
+
+input:focus {
+outline-width:0px;
+box-shadow: none;
+border: none;
+/*border-bottom:1px solid #FF4B38;*/
+}

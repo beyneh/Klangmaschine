@@ -21,7 +21,7 @@ var wordInput;
 
 function setupUI() {
   wordInput = createInput();
-  wordInput.position(10,10)
+  wordInput.position(width/2-150,height/2)
   wordInput.size(300,30)
   wordInput.input(onKeyPressed);
   

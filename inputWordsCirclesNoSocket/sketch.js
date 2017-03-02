@@ -7,10 +7,35 @@ var nextColorIndex = 0;
 var currentCircle;
 
 function setup() {
-  createCanvas(1000, 1000);
-  noFill();
-  //blendMode(LIGHTEST);
+  createCanvas(1500, 600)
+  noFill()
+  setupUI()
 }
+var wordInput;
+
+
+function setupUI() {
+  wordInput = createInput();
+  wordInput.position(width / 2 - 500, height / 2)
+  wordInput.size(1000, 30)
+  wordInput.elt.focus();
+  wordInput.input(onKeyPressed);
+}
+
+function onKeyPressed() {
+  console.log(wordInput.value());
+  var currentValue = wordInput.value();
+  if(currentValue.endsWith(".")) 
+  {
+    wordInput.value("");
+  }
+}
+
+/*function keyPressed(){
+  if (keyCode==RETURN){
+    wordInput.value("");
+  }
+}*/
 
 function draw() {
   background(50);
@@ -20,6 +45,7 @@ function draw() {
     var color = colors[nextColorIndex];
     currentCircle = createCircle(color, fillColor);
     drawCircle(currentCircle);
+    wordInput.elt.focus();
   }
 
   for (var i = 0; i < circles.length; ++i) {
@@ -35,7 +61,12 @@ function mousePressed() {
   if (circles.length >= 4) {
     circles.splice(0, 1);
   }
+    //wordInput.elt.focus();
 }
+
+//function mouseClicked(){
+  //  wordInput.elt.focus();
+//}
 
 function mouseReleased() {
 
@@ -44,14 +75,14 @@ function mouseReleased() {
   if (nextColorIndex == colors.length) {
     nextColorIndex = 0;
   }
-  
- for (var i = 0; i < circles.length; ++i){
-   var circle = circles[i];
-  sendOsc("/circles", i+1 + ";" + circle.x + ";" + circle.y +";" + circle.radius);
-  
- }
-  
-  
+
+  for (var i = 0; i < circles.length; ++i) {
+    var circle = circles[i];
+    sendOsc("/circles", i + 1 + ";" + circle.x + ";" + circle.y + ";" + circle.radius);
+
+  }
+
+  //wordInput.elt.focus();
 }
 
 function calculateRadius() {

@@ -1,3 +1,4 @@
+var socket;
 var circles = new Array();
 var colors = new Array('rgb(255,255,255)', "rgb(120,120,120)", "rgb(10,10,10)", "rgb(255,75,56)");
 var fillColors = new Array('rgba(255,255,255, 0.2)', "rgba(120,120,120,0.2)", "rgba(10,10,10,0.2)", "rgba(255,75,56,0.5)");
@@ -9,7 +10,38 @@ var currentCircle;
 function setup() {
   createCanvas(1000, 1000);
   noFill();
-  //blendMode(LIGHTEST);
+  // make a magic internet portal!
+  // leave this line
+  socket = io('http://Sbhklr-MacBook-Pro.local:3000');
+
+  // this is how we know we're connected
+  socket.on('connect', function() {
+    print(" I connected!! ");
+  });
+  setupUI()
+}
+
+function sendOsc(address, value) {
+  socket.emit('message', [address].concat(value));
+}
+
+var wordInput;
+
+function setupUI() {
+  wordInput = createInput();
+  wordInput.position(10,10)
+  wordInput.size(300,30)
+  wordInput.input(onKeyPressed);
+  
+}
+
+function onKeyPressed() {
+  console.log(wordInput.value());
+  var currentValue = wordInput.value();
+  if (currentValue.endsWith(".")) {
+    wordInput.value("");
+    sendOsc("/words", currentValue);
+  }
 }
 
 function draw() {
