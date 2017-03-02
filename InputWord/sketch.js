@@ -30,8 +30,8 @@ function setupUI() {
 function onKeyPressed() {
   console.log(wordInput.value());
   var currentValue = wordInput.value();
-  if (currentValue.endsWith(" ")) {
+  if (currentValue.endsWith(".")) {
     wordInput.value("");
-    sendOsc("words", currentValue);
+    sendOsc("/words", currentValue);
   }
 }
