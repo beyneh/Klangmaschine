@@ -13,13 +13,16 @@ function setup() {
   createCanvas(1000, 1000);
   noFill();
   //blendMode(LIGHTEST);
-
-  socket = io('http://Sbhklr-MacBook-Pro.local:3000');  
-  socket.on('connect', function() { print(" Connected. "); });
+  if(typeof io === "function"){    
+    socket = io('http://Sbhklr-MacBook-Pro.local:3000');  
+    socket.on('connect', function() { print(" Connected. "); });    
+  }
 }
 
 function sendOsc(address, value) {
-  socket.emit('message', [address].concat(value));
+  if(socket){    
+    socket.emit('message', [address].concat(value));
+  }
 }
 
 function draw() {
@@ -89,7 +92,6 @@ function rgbColor(color){
 function drawCircle(circle) {
 
   var maximumExpand = circle.radius / 10.0;
-  console.log(circle.currentExpand / maximumExpand);
   var expandStep = (maximumExpand / 8.0) * circle.currentExpandDirection;
 
   circle.currentExpand = circle.currentExpand + expandStep;
