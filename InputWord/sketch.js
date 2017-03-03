@@ -1,7 +1,7 @@
 var socket;
 
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(200, 200);
   // make a magic internet portal!
   // leave this line
   socket = io('http://Sbhklr-MacBook-Pro.local:3000');

@@ -1,18 +1,32 @@
+var socket;
+
 var circles = new Array();
-var colors = new Array('rgb(255,255,255)', "rgb(120,120,120)", "rgb(10,10,10)", "rgb(255,75,56)");
-var fillColors = new Array('rgba(255,255,255, 0.2)', "rgba(120,120,120,0.2)", "rgba(10,10,10,0.2)", "rgba(255,75,56,0.5)");
+var colors = new Array('rgb(255,75,56)', "rgb(120,120,120)", "rgb(10,10,10)", "rgb(255,255,255)");
+var fillColors = new Array('rgba(255,75,56, 0.5)', "rgba(120,120,120,0.2)", "rgba(10,10,10,0.2)", "rgba(255,255,255,0.4)");
 var mouseXPressed = 0;
 var mouseYPressed = 0;
 var nextColorIndex = 0;
 var currentCircle;
 
-function setup() {
-  createCanvas(1900, 980)
-  noFill()
-  setupUI()
-}
-var wordInput;
 
+function setup() {
+  createCanvas(1900, 980);
+  noFill();
+    setupUI();
+  //blendMode(LIGHTEST);
+  if(typeof io === "function"){    
+    socket = io('http://192.168.2.100:3000');  
+    socket.on('connect', function() { print(" Connected. "); });    
+  } else {
+    console.log("io library not loaded.");
+  }
+}
+
+function sendOsc(address, value) {
+  if(socket){    
+    socket.emit('message', [address].concat(value));
+  }
+}
 
 function setupUI() {
   wordInput = createInput();
@@ -27,6 +41,7 @@ function onKeyPressed() {
   var currentValue = wordInput.value();
   if (currentValue.endsWith(".")) {
     wordInput.value("");
+    sendOsc("/words", currentValue);
   }
 }
 
@@ -38,6 +53,7 @@ function onKeyPressed() {
 
 function draw() {
   background(50);
+
   if (mouseIsPressed) {
     var fillColor = fillColors[nextColorIndex];
     var color = colors[nextColorIndex];
@@ -49,11 +65,13 @@ function draw() {
   for (var i = 0; i < circles.length; ++i) {
     drawCircle(circles[i]);
   }
+  
   fill(255, 75, 56);
   noStroke();
   textSize(30);
   textFont("Courier", "monospace");
-  text("tell me what to say", width / 2 - 170, height / 2 - 60, 500, 300);
+  text("tell me what to say in my awesome voice", width / 2 - 350, height / 2 - 60, 800, 300);
+  
 }
 
 function mousePressed() {
@@ -65,7 +83,6 @@ function mousePressed() {
   }
 }
 
-
 function mouseReleased() {
 
   circles.push(currentCircle);
@@ -73,12 +90,13 @@ function mouseReleased() {
   if (nextColorIndex == colors.length) {
     nextColorIndex = 0;
   }
+  
+ for (var i = 0; i < circles.length; ++i){
+  var circle = circles[i];
+  sendOsc("/circles", i+1 + ";" + circle.x + ";" + circle.y +";" + circle.radius);
+ }
 
-  for (var i = 0; i < circles.length; ++i) {
-    var circle = circles[i];
-    sendOsc("/circles", i + 1 + ";" + circle.x + ";" + circle.y + ";" + circle.radius);
-
-  }
+  
 }
 
 function calculateRadius() {
@@ -92,6 +110,8 @@ function createCircle(color, fillColor) {
   circle.y = mouseYPressed;
   circle.color = color;
   circle.fillColor = fillColor;
+  circle.currentExpand = 0.01;
+  circle.currentExpandDirection = 1.0;
   return circle;
 }
 
@@ -99,9 +119,24 @@ function mouseDistanceToCenter() {
   return int(dist(width / 2, height / 2, mouseX, mouseY));
 }
 
+function rgbColor(color){
+  return "rgba(" + color.r + "," + color.g + "," + color.b + "," + color.a + ")";
+}
+
 function drawCircle(circle) {
+
+  var maximumExpand = circle.radius / 10.0;
+  var expandStep = (maximumExpand / circle.radius*20/*8.0*/) * circle.currentExpandDirection;
+
+  circle.currentExpand = circle.currentExpand + expandStep;
+  if(circle.currentExpand > maximumExpand || circle.currentExpand < -maximumExpand){
+     circle.currentExpandDirection *= -1;
+     //circle.currentExpand = 0;
+  }
+  
   fill(color(circle.fillColor));
   stroke(color(circle.color));
-  strokeWeight(1);
-  ellipse(circle.x, circle.y, circle.radius, circle.radius);
-}
+  strokeWeight(0);
+  ellipse(circle.x, circle.y, circle.radius + circle.currentExpand, circle.radius + circle.currentExpand);
+
+  }
