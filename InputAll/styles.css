@@ -1,20 +1,28 @@
 body {
-  background-color:#323232;
+	background-color:#323232;
+}
+
+* { margin:0; padding:0; } /* to remove the top and left whitespace */
+
+html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
+
+canvas { 
+	display:block; 
 }
 
 input {
-font-family: Courier,monospace;
-color: #FF4B38;
-font-size: 30px;
-border: none;
-/*border-bottom:1px solid #FF4B38;*/
-background:transparent;
-text-align: center;
+	font-family: Courier,monospace;
+	color: #FF4B38;
+	font-size: 30px;
+	border: none;
+	/*border-bottom:1px solid #FF4B38;*/
+	background:transparent;
+	text-align: center;
 }
 
 input:focus {
-outline-width:0px;
-box-shadow: none;
-border: none;
-/*border-bottom:1px solid #FF4B38;*/
+	outline-width:0px;
+	box-shadow: none;
+	border: none;
+	/*border-bottom:1px solid #FF4B38;*/
 }

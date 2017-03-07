@@ -10,12 +10,13 @@ var currentCircle;
 
 
 function setup() {
-  createCanvas(1900, 980);
+  createCanvas(1440, 750);
   noFill();
-    setupUI();
-  //blendMode(LIGHTEST);
-  if(typeof io === "function"){    
-    socket = io('http://192.168.2.100:3000');  
+  setupUI();
+  
+  if(typeof io === "function"){ 
+    var host = "localhost";   
+    socket = io("http://" + host + ":3000");  
     socket.on('connect', function() { print(" Connected. "); });    
   } else {
     console.log("io library not loaded.");
@@ -29,27 +30,32 @@ function sendOsc(address, value) {
 }
 
 function setupUI() {
+  var inputWidth = 800;
   wordInput = createInput();
-  wordInput.position(width / 2 - 500, height / 2)
-  wordInput.size(1000, 30)
+  wordInput.position(width / 2 - (inputWidth/2), height / 2);
+  wordInput.size(inputWidth, 30);
   wordInput.elt.focus();
   wordInput.input(onKeyPressed);
 }
 
-function onKeyPressed() {
-  console.log(wordInput.value());
-  var currentValue = wordInput.value();
-  if (currentValue.endsWith(".")) {
-    wordInput.value("");
-    sendOsc("/words", currentValue);
-  }
+function onKeyPressed(event) {
+  
 }
 
-/*function keyPressed(){
-  if (keyCode==RETURN){
+function keyPressed(){
+  if(keyCode == RETURN){
+    var currentValue = wordInput.value();
+    var sentences = currentValue.split(".");
+    console.log(sentences);
+
+    for (var i = 0; i < sentences.length; ++i) {    
+      var sentence = sentences[i];
+      if(sentence == ""){ continue; }
+      sendOsc("/words", sentence);
+    }
     wordInput.value("");
   }
-}*/
+}
 
 function draw() {
   background(50);
@@ -69,8 +75,13 @@ function draw() {
   fill(255, 75, 56);
   noStroke();
   textSize(30);
+  textAlign(LEFT, TOP);
   textFont("Courier", "monospace");
-  text("tell me what to say in my awesome voice", width / 2 - 350, height / 2 - 60, 800, 300);
+  var labelWidth = 350;
+  var labelHeight = 120;
+  var labelX = width / 2 - labelWidth / 2;
+  var labelY = height / 2 - labelHeight / 2;
+  text("What's on your mind?", labelX, labelY, labelX, labelY);
   
 }
 
