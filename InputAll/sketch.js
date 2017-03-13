@@ -3,10 +3,10 @@ var socket;
 var circles = new Array();
 var colors = new Array('rgb(255,75,56)', "rgb(120,120,120)", "rgb(10,10,10)", "rgb(255,255,255)");
 var fillColors = new Array('rgba(255,75,56, 0.5)', "rgba(120,120,120,0.2)", "rgba(10,10,10,0.2)", "rgba(255,255,255,0.4)");
+var maxCircles = 4;
 var mouseXPressed = 0;
 var mouseYPressed = 0;
-var nextColorIndex = 0;
-var currentCircle;
+var currentCircle = null;
 
 
 function setup() {
@@ -35,11 +35,7 @@ function setupUI() {
   wordInput.position(width / 2 - (inputWidth/2), height / 2);
   wordInput.size(inputWidth, 30);
   wordInput.elt.focus();
-  wordInput.input(onKeyPressed);
-}
-
-function onKeyPressed(event) {
-  
+  wordInput.input(function(evt){});
 }
 
 function keyPressed(){
@@ -58,14 +54,11 @@ function keyPressed(){
 }
 
 function draw() {
-  background(50);
+  background(50);  
 
-  if (mouseIsPressed) {
-    var fillColor = fillColors[nextColorIndex];
-    var color = colors[nextColorIndex];
-    currentCircle = createCircle(color, fillColor);
-    drawCircle(currentCircle);
-    wordInput.elt.focus();
+  if (mouseIsPressed && currentCircle != null) { 
+    //drawCircle(currentCircle);
+    //wordInput.elt.focus();
   }
 
   for (var i = 0; i < circles.length; ++i) {
@@ -85,37 +78,41 @@ function draw() {
   
 }
 
+function mouseDragged() {
+  currentCircle.radius = calculateRadius(); 
+  console.log("dragged");
+}
+
 function mousePressed() {
+  console.log("pressed");
   mouseXPressed = mouseX;
   mouseYPressed = mouseY;
 
-  if (circles.length >= 4) {
-    circles.splice(0, 1);
+  if (circles.length > maxCircles) {    
+    circles.splice(0, 1);    
+  } else {
+    var id = circles.length + 1;
+    var fillColor = fillColors[circles.length];
+    var color = colors[circles.length];
+    console.log("Creating cricle." + id);    
+    currentCircle = createCircle(id, color, fillColor);
+    circles.push(currentCircle);
   }
 }
 
 function mouseReleased() {
 
-  circles.push(currentCircle);
-  ++nextColorIndex
-  if (nextColorIndex == colors.length) {
-    nextColorIndex = 0;
-  }
-  
- for (var i = 0; i < circles.length; ++i){
-  var circle = circles[i];
-  sendOsc("/circles", i+1 + ";" + circle.x + ";" + circle.y +";" + circle.radius);
- }
-
-  
+  sendOsc("/circles", currentCircle.id + ";" + currentCircle.x + ";" + currentCircle.y +";" + currentCircle.radius);
+  currentCircle = null;
 }
 
 function calculateRadius() {
   return 2 * int(dist(mouseXPressed, mouseYPressed, mouseX, mouseY));
 }
 
-function createCircle(color, fillColor) {
+function createCircle(id, color, fillColor) {
   var circle = new Object({});
+  circle.id = id;
   circle.radius = calculateRadius();
   circle.x = mouseXPressed;
   circle.y = mouseYPressed;
@@ -138,11 +135,10 @@ function drawCircle(circle) {
 
   var maximumExpand = circle.radius / 10.0;
   var expandStep = (maximumExpand / circle.radius*20/*8.0*/) * circle.currentExpandDirection;
-
   circle.currentExpand = circle.currentExpand + expandStep;
+
   if(circle.currentExpand > maximumExpand || circle.currentExpand < -maximumExpand){
      circle.currentExpandDirection *= -1;
-     //circle.currentExpand = 0;
   }
   
   fill(color(circle.fillColor));
@@ -150,4 +146,4 @@ function drawCircle(circle) {
   strokeWeight(0);
   ellipse(circle.x, circle.y, circle.radius + circle.currentExpand, circle.radius + circle.currentExpand);
 
-  }
+}
