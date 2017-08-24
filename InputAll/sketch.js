@@ -24,7 +24,7 @@ function setup() {
 }
 
 function sendOsc(address, value) {
-  return;
+  
   if(socket){    
     socket.emit('message', [address].concat(value));
     console.log([address].concat(value));
