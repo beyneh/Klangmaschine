@@ -7,8 +7,7 @@ var maxCircles = 4;
 var mouseXPressed = 0;
 var mouseYPressed = 0;
 var currentCircle = null;
-var saveCircle = false;
-
+var isExistingCircle = false;
 
 function setup() {
   createCanvas(1440, 750);
@@ -59,10 +58,6 @@ function keyPressed(){
 function draw() {
   background(50);  
 
-  if (mouseIsPressed && currentCircle != null) {     
-    drawCircle(currentCircle);    
-  }
-
   for (var i = 0; i < circles.length; ++i) {
     drawCircle(circles[i]);
   }  
@@ -79,34 +74,61 @@ function draw() {
   text("What's on your mind?", labelX, labelY, labelX, labelY);  
 }
 
-function mouseDragged() {
-  if(currentCircle) {
+function mouseDragged() {  
+  if(!currentCircle) return;
+
+  if(isExistingCircle && keyIsDown(SHIFT)) {
+    currentCircle.x = mouseX;
+    currentCircle.y = mouseY;
+  } else {
     currentCircle.radius = calculateRadius();
-    sendOsc("/circles", currentCircle.id + ";" + currentCircle.x + ";" + currentCircle.y +";" + currentCircle.radius);
-  }
+  }    
 }
 
-function mousePressed() {
-  console.log("pressed");
+function intersectingCircle(x,y){
+  var circleIndex = -1;
+  var minDistance = Number.MAX_VALUE;
+
+  for (var i = 0; i < circles.length; ++i) {
+    var circle = circles[i];
+    var distance = Math.sqrt((x-circle.x)*(x-circle.x) + (y-circle.y)*(y-circle.y))
+        
+    if(distance < round(circle.radius + circle.currentExpand) / 2 && distance < minDistance){
+      circleIndex = i;
+    }
+  }  
+  return circleIndex;
+}
+
+function mousePressed() {  
   mouseXPressed = mouseX;
   mouseYPressed = mouseY;
+  var clickedCircleIndex = intersectingCircle(mouseXPressed, mouseYPressed);
+
+  if (clickedCircleIndex != -1) {        
+    currentCircle  = circles[clickedCircleIndex];
+    isExistingCircle = true;
+    return;
+  } else {
+    isExistingCircle = false;
+  }
 
   if (circles.length >= maxCircles) {    
     //circles.splice(0, 1);
-  } else {
-    saveCircle = true;
+  }
+
+  if(circles.length < maxCircles) {    
     var id = circles.length + 1;
     var fillColor = fillColors[circles.length];
-    var color = colors[circles.length];
-    console.log("Creating circle: " + id + " " + fillColor + " " + color);    
+    var color = colors[circles.length];    
     currentCircle = createCircle(id, color, fillColor);    
+    circles.push(currentCircle);
   }
 }
 
 function mouseReleased() {
-  if(saveCircle){
-    circles.push(currentCircle);
-    saveCircle = false;
+  if(currentCircle){
+    sendOsc("/circles", currentCircle.id + ";" + currentCircle.x + ";" + currentCircle.y +";" + currentCircle.radius);
   }
   currentCircle = null;
   wordInput.elt.focus();
@@ -141,6 +163,7 @@ function rgbColor(color){
 function drawCircle(circle) {
   var maximumExpand = circle.radius / 10.0;
   var expandStep = (maximumExpand / circle.radius*20/*8.0*/) * circle.currentExpandDirection;
+  if(circle == currentCircle) expandStep = 0;
   circle.currentExpand = circle.currentExpand + expandStep;
 
   if(circle.currentExpand > maximumExpand || circle.currentExpand < -maximumExpand){
