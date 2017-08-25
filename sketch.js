@@ -10,7 +10,7 @@ var currentCircle = null;
 var isExistingCircle = false;
 
 function setup() {
-  createCanvas(1440, 750);
+  createCanvas(1440, 900);
   noFill();
   setupUI();
   
