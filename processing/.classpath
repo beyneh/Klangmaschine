@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/native/macosx64"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/controlP5.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/core.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/gstreamer-java.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/jl1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/jna.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/jogl-all.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/jsminim.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/jsyn.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/klang.jar" sourcepath="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/sources/klang/src"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/minim.jar" sourcepath="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/sources/Minim/src"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/mp3spi1.9.4.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/netzwerk.jar" sourcepath="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/sources/netzwerk/src"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/oscP5.jar" sourcepath="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/sources/oscP5/src"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/tritonus_aos.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="/Users/sebastianhunkeler/Programming/07 Introduction to Programming/itp2017/projects/sebastianhunkeler/LibProcessing/video.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
