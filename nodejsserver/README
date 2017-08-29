@@ -1,0 +1,26 @@
+
+
+Now, your computer sucks. Fix it. Open a terminal and type the following:
+
+sudo networksetup -createnetworkservice Loopback lo0
+sudo networksetup -setmanual Loopback 172.20.42.42 255.255.255.255
+
+Ok, so what is that doing? You're creating a network interface for your loopback interface, this is what allows your computer to share its wifi without attempting to actually connect to anything else, just sharing its own files and ports.
+
+Now, open your System Preferences and go to Sharing. Select 'Internet Sharing'. In the right side of the pane select "Share your connection from" and pick "Loopback" from the Dropdown. Below that is a pane that says "To computers using", in there select "Wifi". Look for the Wifi Options button in the lower right hand corner of the screen. Pick a network name that makes sense and THIS IS IMPORTANT pick a good channel (e.g. a channel that not everyone else is using). You should see your wifi icon in the system bar of your macbook change to a thing that looks like an arrow pointing upwards. This means you're actually making a proper network.
+
+Now go to https://nodejs.org/en/download/ and download and install node. Once you've installed node, navigate to the folder in the terminal and run the following command:
+
+npm install --save
+
+this will create a node-libraries folder that has all the libraries you need to run the node application
+
+After you've installed the node libraries, then type:
+
+node itp_p5_bridge.js
+
+This will allow your p5 counterpart to connect to your server. You'll also need to tell them the name of your machine, you can find this in the System Preferences -> Sharing
+
+Your p5 counterpart will then edit their html file and sketch.js file to access your server at <YourMachine>.local:3000
+
+Have fun!
