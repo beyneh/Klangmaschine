@@ -1,0 +1,4 @@
+java -cp "/Users/sebastianhunkeler/Programming/07 Introduction to Programming/broadcastingserver/library/netzwerk.jar:/Users/sebastianhunkeler/Programming/07 Introduction to Programming/broadcastingserver/library/oscP5.jar:/Applications/Processing.app/Contents/Java/core/library/core.jar" de.hfkbremen.netzwerk.applications.AppBroadcastingServerTerminal
+
+/Users/sebastianhunkeler/Programming/07 Introduction to Programming/nodejsserver
+node itp_p5_bridge.js
